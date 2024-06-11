@@ -1,39 +1,15 @@
-name: CI Pipeline
+stages:
+  - build
+  - test
 
-on: [push, pull_request]
+build_job:
+  stage: build
+  script:
+    - echo "Building the project..."
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build the project
-      run: npm run build
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run tests
-      run: npm test
+test_job:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - chmod +x script/run_tests.sh
+    - ./script/run_tests.sh
